@@ -6,10 +6,10 @@ import {
 import { Todo } from '../types';
 
 interface Props {
-    open: boolean;
-    onClose: () => void;
-    onSave: (data: Partial<Todo>) => void;
-    editingTodo?: Todo;
+    open: boolean,
+    onClose: () => void,
+    onSave: (data: Partial<Todo>) => void,
+    editingTodo?: Todo
 }
 
 export default function TodoDialog({ open, onClose, onSave, editingTodo }: Props) {

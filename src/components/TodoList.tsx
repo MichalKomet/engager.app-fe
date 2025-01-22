@@ -4,9 +4,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Todo } from '../types';
 
 interface Props {
-    todos: Todo[];
-    onEdit: (todo: Todo) => void;
-    onDelete: (id: number) => void;
+    todos: Todo[],
+    onEdit: (todo: Todo) => void,
+    onDelete: (id: number) => void
 }
 
 export default function TodoList({ todos, onEdit, onDelete }: Props) {

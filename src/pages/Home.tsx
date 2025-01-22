@@ -13,7 +13,7 @@ export default function Home() {
 
     useEffect(() => {
         fetchTodos();
-    }, [dialogOpen]);
+    }, []);
 
     const fetchTodos = async () => {
         try {

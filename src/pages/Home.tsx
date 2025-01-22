@@ -9,6 +9,7 @@ export default function Home() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [editingTodo, setEditingTodo] = useState<Todo | undefined>(undefined);
+    const [filter, setFilter] = useState(false);
 
     useEffect(() => {
         fetchTodos();
@@ -42,6 +43,13 @@ export default function Home() {
         setDialogOpen(true);
     };
 
+    const filteredTodos = filter ?
+        todos
+        : todos.filter(todo =>
+            todo.completionDate === null ||
+            todo.completionDate && new Date(todo.completionDate).getTime() > Date.now()
+        );
+
     const handleSave = async (data: Partial<Todo>) => {
         try {
             if (editingTodo) {
@@ -59,16 +67,29 @@ export default function Home() {
     };
 
     return (
-        <Container sx={{ mt: 4 }}>
+        <Container sx={{mt: 4}}>
             <Typography variant="h4" gutterBottom>
                 My Great TODO List
             </Typography>
 
-            <Button variant="contained" onClick={handleOpenNew} sx={{ mb: 2 }}>
+            <Button variant="contained" onClick={handleOpenNew} sx={{mb: 2}}>
                 Add New
             </Button>
 
-            <TodoList todos={todos} onEdit={handleEdit} onDelete={handleDelete} />
+            <label>
+                <input
+                    type="checkbox"
+                    checked={filter}
+                    onChange={e => setFilter(e.target.checked)}
+                />
+                Show completed Todos
+            </label>
+
+            <TodoList
+                todos={filteredTodos}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            />
 
             <TodoDialog
                 open={dialogOpen}

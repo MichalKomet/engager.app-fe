@@ -1,17 +1,18 @@
-# TODO App (Backend + Frontend)
+# TODO App (Frontend)
 
 This repository demonstrates a simple TODO application with:
 
 - **Backend**: Node.js + Express + PostgreSQL
 - **Frontend**: React + TypeScript + MUI
 
+Backend repository of this application can be found on [GitHub](https://github.com/MichalKomet/engager.app-be)
+
 ## Backend Setup
 
-1. **Clone or download** the backend repository
+1. **Clone or download** the [backend repository](https://github.com/MichalKomet/engager.app-be)
 2. **Create a .env file** based on .env.example, providing necessary variables, for example:
 
 ```dotenv
-SERVER_HOST=server
 SERVER_PORT=7005
 
 PG_USER=myuser
@@ -29,12 +30,6 @@ PG_PASSWORD=mypassword
 
 ```bash
   docker-compose --env-file .env up
-```
-
-Or run directly with Node:
-
-```bash
-  npm run start
 ```
 
 The backend will be available at http://localhost:7005 (or wherever you configured SERVER_PORT).

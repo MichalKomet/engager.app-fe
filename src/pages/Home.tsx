@@ -54,18 +54,14 @@ export default function Home() {
         }), [todos, showCompleted]);
 
     const handleSave = async (data: Partial<Todo>) => {
-        try {
-            if (editingTodo) {
-                const updated = await updateTodo(editingTodo.id, data);
-                setTodos((prev) =>
-                    prev.map((t) => (t.id === editingTodo.id ? updated : t))
-                );
-            } else {
-                const newTodo = await createTodo(data);
-                setTodos((prev) => [...prev, newTodo]);
-            }
-        } catch (err) {
-            console.error(err);
+        if (editingTodo) {
+            const updated = await updateTodo(editingTodo.id, data);
+            setTodos((prev) =>
+                prev.map((t) => (t.id === editingTodo.id ? updated : t))
+            );
+        } else {
+            const newTodo = await createTodo(data);
+            setTodos((prev) => [...prev, newTodo]);
         }
     };
 

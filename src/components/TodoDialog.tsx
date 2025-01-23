@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import {
     Dialog, DialogTitle, DialogContent, DialogActions,
-    Button, TextField
+    Button, TextField, Alert
 } from '@mui/material';
 import { Todo } from '../types';
 
 interface Props {
     open: boolean,
     onClose: () => void,
-    onSave: (data: Partial<Todo>) => void,
+    onSave: (data: Partial<Todo>) => Promise<void>,
     editingTodo?: Todo
 }
 
@@ -16,6 +16,7 @@ export default function TodoDialog({ open, onClose, onSave, editingTodo }: Props
     const [name, setName] = useState('');
     const [dueDate, setDueDate] = useState<string | null>(null);
     const [completionDate, setCompletionDate] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
         if (editingTodo) {
@@ -27,16 +28,28 @@ export default function TodoDialog({ open, onClose, onSave, editingTodo }: Props
             setDueDate(null);
             setCompletionDate(null);
         }
+        setErrorMessage(null);
     }, [editingTodo]);
 
     const handleSubmit = () => {
-        onSave({ name, dueDate, completionDate });
-        onClose();
+        setErrorMessage(null);
+
+        onSave({ name, dueDate, completionDate })
+            .then(() => onClose())
+            .catch((error) => {
+                if (error instanceof Error) {
+                    setErrorMessage(error.message);
+                } else {
+                    setErrorMessage('Something went wrong');
+                }
+            });
     };
 
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{editingTodo ? 'Edit TODO' : 'New TODO'}</DialogTitle>
+            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+
             <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
                 <TextField
                     label="Name"

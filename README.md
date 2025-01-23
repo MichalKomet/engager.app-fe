@@ -1,50 +1,95 @@
-# React + TypeScript + Vite
+# TODO App (Backend + Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository demonstrates a simple TODO application with:
 
-Currently, two official plugins are available:
+- **Backend**: Node.js + Express + PostgreSQL
+- **Frontend**: React + TypeScript + MUI
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Backend Setup
 
-## Expanding the ESLint configuration
+1. **Clone or download** the backend repository
+2. **Create a .env file** based on .env.example, providing necessary variables, for example:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+```dotenv
+SERVER_HOST=server
+SERVER_PORT=7005
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+PG_USER=myuser
+PG_NAME=mydb
+PG_PASSWORD=mypassword
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+3. **Install dependencies** (in the backend folder):
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+  npm install
 ```
+
+4. **Run via Docker** (optional but recommended if provided):
+
+```bash
+  docker-compose --env-file .env up
+```
+
+Or run directly with Node:
+
+```bash
+  npm run start
+```
+
+The backend will be available at http://localhost:7005 (or wherever you configured SERVER_PORT).
+
+Make sure the backend is running and accessible (e.g., you can test GET /items via Postman or browser).
+
+## Frontend Setup
+
+1. **Clone or download** this repository (the frontend).
+2. **Create a .env file** to specify the backend URL, for example:
+
+```dotenv
+VITE_API_URL=http://localhost:7005
+```
+
+3. **Install dependencies**:
+
+```bash
+  npm install
+```
+
+4. **Start development server**:
+
+```bash
+  npm run start
+```
+
+This will open the React application in your browser (default at http://localhost:5173 or a similar port).
+
+## Usage
+
+1.	Ensure the backend is running (so the frontend can successfully fetch data).
+2.	Open the frontend in your browser (e.g., http://localhost:5173).
+3.	Create, Edit, or Delete TODO items. By default, the application sorts tasks by due date, and you can optionally display completed tasks via a checkbox.
+4.	Validation Errors will appear if you submit invalid data (empty name, invalid date format, etc.), and the dialog will remain open for you to correct the inputs.
+
+## Project Overview
+
+•	**Backend** Endpoints:
+-	GET /items – retrieve all TODOs
+-	POST /items – create a new TODO
+-	PUT /items/:id – update an existing TODO
+-	DELETE /items/:id – remove a TODO
+
+Each endpoint enforces validation on the server side.
+
+•	**Frontend**:
+-	Built with React, TypeScript, and MUI (Material UI).
+-	Displays a list of TODOs (with optional filtering of completed tasks).
+-	Provides a Dialog to add or edit tasks.
+-	Shows error messages if validation fails on the server.
+
+## Troubleshooting
+
+-	**Database**: Make sure your PostgreSQL is running and that credentials in .env match your local DB settings.
+-	**Docker**: If using Docker, ensure the containers (backend & DB) are up and running before the frontend tries to connect.
+
+That’s it! You should now have a functioning TODO app with a Node/Express/PostgreSQL backend and a React/TypeScript/MUI frontend. Feel free to customize styling, routing, or add more features as needed.

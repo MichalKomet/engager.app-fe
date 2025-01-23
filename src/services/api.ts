@@ -6,7 +6,7 @@ export const getTodo = async (id: number): Promise<Todo> => {
     const res = await fetch(`${BASE_URL}/items/${id}`);
     const resText = await res.json();
 
-    if (!resText.success) throw new Error('Failed to fetch todo');
+    if (resText.success === false || !res.ok) throw new Error('Failed to fetch todo');
 
     return resText;
 };
@@ -15,7 +15,7 @@ export const getAllTodos = async (): Promise<Todo[]> => {
     const res = await fetch(`${BASE_URL}/items`);
     const resText = await res.json();
 
-    if (!resText.success) throw new Error('Failed to fetch todos');
+    if (resText.success === false || !res.ok) throw new Error('Failed to fetch todos');
 
     return resText;
 };
@@ -28,7 +28,7 @@ export const createTodo = async (data: Partial<Todo>): Promise<Todo> => {
     });
     const resText = await res.json();
 
-    if (!resText.success) {
+    if (resText.success === false || !res.ok) {
         throw new Error(
             resText.errors[0].msg ||
             resText.message ||
@@ -50,7 +50,7 @@ export const updateTodo = async (
     });
     const resText = await res.json();
 
-    if (!resText.success) {
+    if (resText.success === false || !res.ok) {
         throw new Error(
             resText.errors[0].msg ||
             resText.message ||
@@ -67,7 +67,7 @@ export const deleteTodo = async (id: number): Promise<{deletedId: number}> => {
     });
     const resText = await res.json();
 
-    if (!resText.success) throw new Error('Failed to delete todo');
+    if (resText.success === false || !res.ok) throw new Error('Failed to delete todo');
 
     return resText;
 };

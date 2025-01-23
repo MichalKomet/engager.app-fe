@@ -19,6 +19,8 @@ export default function TodoDialog({ open, onClose, onSave, editingTodo }: Props
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     useEffect(() => {
+        if (!open) return;
+
         if (editingTodo) {
             setName(editingTodo.name || '');
             setDueDate(editingTodo.dueDate || null);
@@ -29,7 +31,7 @@ export default function TodoDialog({ open, onClose, onSave, editingTodo }: Props
             setCompletionDate(null);
         }
         setErrorMessage(null);
-    }, [editingTodo]);
+    }, [open, editingTodo]);
 
     const handleSubmit = () => {
         setErrorMessage(null);

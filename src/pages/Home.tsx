@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import { Button, Container, Typography } from '@mui/material';
 import { getAllTodos, createTodo, updateTodo, deleteTodo } from '../services/api';
 import TodoList from '../components/TodoList';
@@ -9,7 +9,7 @@ export default function Home() {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [editingTodo, setEditingTodo] = useState<Todo | undefined>(undefined);
-    const [filter, setFilter] = useState(false);
+    const [showCompleted, setShowCompleted] = useState(false);
 
     useEffect(() => {
         fetchTodos();
@@ -43,12 +43,15 @@ export default function Home() {
         setDialogOpen(true);
     };
 
-    const filteredTodos = filter ?
-        todos
-        : todos.filter(todo =>
-            todo.completionDate === null ||
-            todo.completionDate && new Date(todo.completionDate).getTime() > Date.now()
-        );
+    const displayedTodos = useMemo((): Todo[] => [...todos]
+        .filter((todo) =>
+            showCompleted || !todo.completionDate
+        ).sort((a,b) => {
+            const dateA = a.dueDate ? new Date(a.dueDate).getTime() : 0;
+            const dateB = b.dueDate ? new Date(b.dueDate).getTime() : 0;
+
+            return dateB - dateA;
+        }), [todos, showCompleted]);
 
     const handleSave = async (data: Partial<Todo>) => {
         try {
@@ -79,14 +82,14 @@ export default function Home() {
             <label>
                 <input
                     type="checkbox"
-                    checked={filter}
-                    onChange={e => setFilter(e.target.checked)}
+                    checked={showCompleted}
+                    onChange={e => setShowCompleted(e.target.checked)}
                 />
                 Show completed Todos
             </label>
 
             <TodoList
-                todos={filteredTodos}
+                todos={displayedTodos}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             />

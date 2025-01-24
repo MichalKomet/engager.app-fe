@@ -62,14 +62,16 @@ export default function TodoDialog({ open, onClose, onSave, editingTodo }: Props
                 <TextField
                     label="Due Date"
                     type="date"
-                    value={dueDate}
+                    value={dueDate || ''}
                     onChange={(e) => setDueDate(e.target.value || null)}
+                    InputLabelProps={{ shrink: true }}
                 />
                 <TextField
                     label="Completion Date"
                     type="date"
-                    value={completionDate}
+                    value={completionDate || ''}
                     onChange={(e) => setCompletionDate(e.target.value || null)}
+                    InputLabelProps={{ shrink: true }}
                 />
             </DialogContent>
             <DialogActions>

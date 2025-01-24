@@ -26,10 +26,15 @@ PG_PASSWORD=mypassword
   npm install
 ```
 
-4. **Run via Docker** (optional but recommended if provided):
+4. **Run via Docker** (optional but recommended):
 
 ```bash
   docker-compose --env-file .env up
+```
+
+Or run directly with Node:
+```bash
+  npm run start
 ```
 
 The backend will be available at http://localhost:7005 (or wherever you configured SERVER_PORT).
@@ -86,5 +91,3 @@ Each endpoint enforces validation on the server side.
 
 -	**Database**: Make sure your PostgreSQL is running and that credentials in .env match your local DB settings.
 -	**Docker**: If using Docker, ensure the containers (backend & DB) are up and running before the frontend tries to connect.
-
-That’s it! You should now have a functioning TODO app with a Node/Express/PostgreSQL backend and a React/TypeScript/MUI frontend. Feel free to customize styling, routing, or add more features as needed.
